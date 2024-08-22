@@ -1,4 +1,15 @@
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: chandrakanth@gmail.com
+    password: xxxxxxxx
+    properties:
+      mail.smtp:
+        auth: true
+        starttls:
+          enable: true
+
   datasource:
     url: jdbc:mysql://localhost:3306/banking
     username: root
@@ -7,8 +18,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update  # Automatically creates or updates tables based on your entities
-    show-sql: true  # Shows generated SQL in the console
+      ddl-auto: update
+    show-sql: true
     properties:
-      hibernate:
-#        dialect: org.hibernate.dialect.MySQL8Dialect  # MySQL 8 dialect for Hibernate
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect

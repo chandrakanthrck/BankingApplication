@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 //reduce the amount of data exposed to the client
 //Prevent direct exposure of entity structure, which can change.
+//for creating a user this is the information we need to provide
 public class UserRequest {
     private String firstName;
     private String lastName;
