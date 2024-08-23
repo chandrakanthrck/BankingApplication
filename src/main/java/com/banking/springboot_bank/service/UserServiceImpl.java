@@ -138,6 +138,21 @@ public class UserServiceImpl implements UserService {
                     accountinfo(null).build();
         }
         User userToDebit = userRepository.findByAccountNumber(request.getAccountNumber());
+        if (request.getAmount() == null) {
+            // Handle the null case, maybe return an error response or throw an exception
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.INVALID_AMOUNT_CODE)
+                    .responseMessage("The amount cannot be null.")
+                    .build();
+        }
+
+        if (request.getAmount() == null) {
+            // Handle the null case, maybe return an error response or throw an exception
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.INVALID_AMOUNT_CODE)
+                    .responseMessage("The amount cannot be null.")
+                    .build();
+        }
         //checking if the amount exceeds the balance of the user
         if (userToDebit.getAccountBalance().compareTo(request.getAmount()) < 0) {
             // Balance is less than the amount to be debited
@@ -182,6 +197,13 @@ public class UserServiceImpl implements UserService {
         }
 
         User sourceAccountUser = userRepository.findByAccountNumber(request.getSourceAccountNumber());
+        if (request.getAmount() == null) {
+            // Handle the null case, maybe return an error response or throw an exception
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.INVALID_AMOUNT_CODE)
+                    .responseMessage("The amount cannot be null.")
+                    .build();
+        }
         if (request.getAmount().compareTo(sourceAccountUser.getAccountBalance()) > 0) {
             return BankResponse.builder()
                     .responseCode(AccountUtils.INSUFFICIENT_FUNDS_CODE)
@@ -201,6 +223,7 @@ public class UserServiceImpl implements UserService {
                 .messageBody("The sum of " + request.getAmount() + " has been deducted from your account! Your current balance is " +
                         sourceAccountUser.getAccountBalance()).build();
         emailService.sendEmailAlert(debitAlerts);
+        System.out.println("Sending email to: " + debitAlerts.getRecipient());
 
         User destinationAccountUser = userRepository.findByAccountNumber(request.getDestinationAccountNumber());
         destinationAccountUser.setAccountBalance(destinationAccountUser.getAccountBalance().add(request.getAmount()));
@@ -213,7 +236,7 @@ public class UserServiceImpl implements UserService {
                         destinationAccountUser.getAccountBalance() + ". This message is intended for " + recipientUsername + ".")
                         .build();
         emailService.sendEmailAlert(creditAlerts);
-
+        System.out.println("Sending email to: " + creditAlerts.getRecipient());
         return BankResponse.builder()
                 .responseCode(AccountUtils.TRANSFER_SUCCESS_CODE)
                 .responseMessage(AccountUtils.TRANSFER_SUCCESS_MESSAGE)
@@ -223,9 +246,5 @@ public class UserServiceImpl implements UserService {
                         .accountName(sourceUserName)
                         .build())
                 .build();
-
-
     }
-
-
 }
