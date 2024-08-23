@@ -14,24 +14,24 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    //access to mailer address from smtp server
+    // Access to the sender's email address from the SMTP server
     @Value("${spring.mail.username}")
     private String senderEmail;
 
-
     @Override
     public void sendEmailAlert(EmailDetails emailDetails) {
-        try{
+        try {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom(senderEmail);
-            mailMessage.setReplyTo(emailDetails.getRecipient());
+            mailMessage.setTo(emailDetails.getRecipient()); // This sets the recipient
             mailMessage.setText(emailDetails.getMessageBody());
             mailMessage.setSubject(emailDetails.getSubject());
 
             javaMailSender.send(mailMessage);
-            System.out.println("Mail sent successfully");
+            System.out.println("Mail sent successfully to " + emailDetails.getRecipient());
         } catch (MailException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace(); // Print the stack trace for better error logging
+            throw new RuntimeException("Error sending email: " + e.getMessage(), e);
         }
     }
 }
