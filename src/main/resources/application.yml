@@ -23,3 +23,7 @@ spring:
     show-sql: true
     properties:
       hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+
+jwt:
+  secret: "gmkg1YydWWFSEwExejJwl0Bv9dqIvyB3e4nqULXSH1JEtzA14hXgcCOz27gxmEiB7BrciEbpAapClUro553tHQ=="
+  expiration: 86400000  # 1 day in milliseconds

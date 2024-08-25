@@ -31,6 +31,9 @@ public class UserRequest {
     @Schema(description = "User's email address", example = "john.doe@example.com")
     private String email;
 
+    @Schema(description = "Set user password for authentication.")
+    private String password;
+
     @Schema(description = "User's primary phone number", example = "+1234567890")
     private String phoneNumber;
 
