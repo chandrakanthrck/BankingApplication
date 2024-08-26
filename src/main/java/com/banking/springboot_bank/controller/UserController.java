@@ -28,13 +28,23 @@ public class UserController {
         return userService.createAccount(userRequest);
     }
 
+    @Operation(
+            summary = "User Login",
+            description = "Authenticates the user using their username and password."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Login successful."
+    )
+    @ApiResponse(
+            responseCode = "401",
+            description = "Invalid credentials."
+    )
     @PostMapping("/login")
     public BankResponse login(@RequestBody LoginDto loginDto){
-
         return userService.login(loginDto);
     }
 
-    @GetMapping("balanceEnquiry")
     @Operation(
             summary = "Balance Enquiry",
             description = "Checks the balance of a user’s account using the provided account number."
@@ -43,11 +53,11 @@ public class UserController {
             responseCode = "200",
             description = "Balance enquiry successful."
     )
+    @GetMapping("/balanceEnquiry")
     public BankResponse balanceEnquiry(@RequestBody EnquiryRequest request){
         return userService.balanceEnquiry(request);
     }
 
-    @GetMapping("nameEnquiry")
     @Operation(
             summary = "Name Enquiry",
             description = "Retrieves the account holder’s name associated with a given account number."
@@ -56,11 +66,12 @@ public class UserController {
             responseCode = "200",
             description = "Name enquiry successful."
     )
+    @GetMapping("/nameEnquiry")
     public String nameEnquiry(@RequestBody EnquiryRequest request){
         return userService.nameEnquiry(request);
     }
 
-    @PostMapping("credit")
+
     @Operation(
             summary = "Credit Account",
             description = "Credits a specified amount to the user’s account."
@@ -69,11 +80,15 @@ public class UserController {
             responseCode = "201",
             description = "Account successfully credited."
     )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Invalid request."
+    )
+    @PostMapping("/credit")
     public BankResponse creditAccount(@RequestBody CreditDebitRequest request){
         return userService.creditAccount(request);
     }
 
-    @PostMapping("debit")
     @Operation(
             summary = "Debit Account",
             description = "Debits a specified amount from the user’s account."
@@ -82,11 +97,15 @@ public class UserController {
             responseCode = "201",
             description = "Account successfully debited."
     )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Invalid request."
+    )
+    @PostMapping("/debit")
     public BankResponse debitedAccount(@RequestBody CreditDebitRequest request){
         return userService.debitAccount(request);
     }
 
-    @PostMapping("transfer")
     @Operation(
             summary = "Transfer Funds",
             description = "Transfers funds from one user account to another."
@@ -95,6 +114,11 @@ public class UserController {
             responseCode = "201",
             description = "Funds successfully transferred."
     )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Invalid request or insufficient funds."
+    )
+    @PostMapping("/transfer")
     public BankResponse transfer(@RequestBody TransferRequest request){
         return userService.transfer(request);
     }

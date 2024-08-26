@@ -37,7 +37,6 @@ public class User implements UserDetails {
     private String accountNumber;
     private BigDecimal accountBalance;
     private String email;
-    //for jwt authentication
     private String password;
     private String phoneNumber;
     private String alternativePhoneNumber;
@@ -51,6 +50,11 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getPassword(){
+        return password;
     }
 
     @Override

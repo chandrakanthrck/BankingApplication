@@ -14,12 +14,13 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 
+//generate token
 @Component
 public class JwtTokenProvider {
-    @Value("${jwt.secret}")
+    @Value("${app.jwt-secret}")
     private String jwtSecret;
 
-    @Value("${jwt.expiration}")
+    @Value("${app.jwt-expiration}")
     private long jwtExpirationDate;
 
     public String generateToken(Authentication authentication){
@@ -35,17 +36,20 @@ public class JwtTokenProvider {
                 signWith(key())
                 .compact();
     }
+
+    //decode jwtSecret key
     private Key key(){
         byte[] bytes = Decoders.BASE64.decode(jwtSecret);
         //Generates a signing key using the HMAC SHA algorithm, which is used to sign the JWT
         return Keys.hmacShaKeyFor(bytes);
     }
+    //get username extracted from the token
     public String getUsername(String token){
         Claims claims = Jwts.parserBuilder().setSigningKey(key()).build()
                 .parseClaimsJws(token).getBody();
         return claims.getSubject();
     }
-//This method extracts the username from the JWT token.
+
     public boolean validateToken(String token){
         //Parses the JWT token, verifies it using the signing key, and retrieves the claims from the token.
         try {
