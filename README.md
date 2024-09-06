@@ -44,7 +44,6 @@ cd banking-application
 ```
 
 #### Configure the Application
-
 Update the database connection properties in `src/main/resources/application.properties`:
 
 ```properties
